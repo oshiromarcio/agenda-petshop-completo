@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "agenda-petshop-front-master"
+		},
+		{
+			"path": "agenda-petshop-graphql-master"
+		},
+		{
+			"path": "agenda-petshop-rest-master"
+		}
+	],
+	"settings": {}
+}

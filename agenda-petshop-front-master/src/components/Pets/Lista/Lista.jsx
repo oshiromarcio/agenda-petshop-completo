@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Query } from 'react-apollo'
+
 import petsApi from '../../../api/pets'
+import { LISTAR_PETS } from '../../../graphql/pets'
 
 class Pets extends React.Component {
   constructor(props) {
@@ -46,21 +49,26 @@ class Pets extends React.Component {
           </thead>
           
           <tbody>
-            {
-              this.state.pets.map(pet => (
-                <tr>
-                  <td>{pet.nome}</td>
-                  <td>{pet.tipo}</td>
-                  <td>{pet.donoId}</td>
-                  <td>{pet.observacoes}</td>
-                  <td>
-                    <Link to={`pets/${pet.id}`}>visualizar</Link>
-                    <Link to={`pets/alterar/${pet.id}`}>alterar</Link>
-                    <button onClick={this.deletarPet.bind(this, pet.id)}>remover</button>
-                  </td>
-                </tr>
-              ))
-            }
+              <Query query={LISTAR_PETS}>
+                {
+                  ({ data }) => {
+                    let pets = data !== undefined ? data.pets : [];
+                    return pets.map(pet => (
+                      <tr>
+                        <td>{pet.nome}</td>
+                        <td>{pet.tipo}</td>
+                        <td>{pet.dono.id} - {pet.dono.nome}</td>
+                        <td>{pet.observacoes}</td>
+                        <td>
+                          <Link to={`pets/${pet.id}`}>visualizar</Link>
+                          <Link to={`pets/alterar/${pet.id}`}>alterar</Link>
+                          <button onClick={this.deletarPet.bind(this, pet.id)}>remover</button>
+                        </td>
+                      </tr>
+                    ))
+                  }
+                }
+              </Query>
           </tbody>
         </table>
       </div>
